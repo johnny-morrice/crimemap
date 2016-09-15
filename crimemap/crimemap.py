@@ -2,6 +2,7 @@ import os
 import sqlite3
 import click
 import pandas as pd
+import json
 from flask import Flask
 from flask import g
 
@@ -18,23 +19,86 @@ app.config.from_envvar('CRIMEMAP_SETTINGS', silent=True)
 
 @app.route('/api/dates')
 def dates():
-	return '[]'
+	dates = get_dates()
+
+	return json.dumps(dates)
 
 @app.route('/api/countries')
 def countries():
-	return '[]'
+	countries = get_countries()
+
+	return json.dumps(countries)
 
 @app.route('/api/countries/<country>')
 def country(country):
-	return '{}'
+	all_crimes = get_all(country)
 
-@app.route('/api/countries/<country>/<date>')
-def crountry_date(country, date):
-	return '0'
+	return json.dumps(all_crimes)
+
+@app.route('/api/countries/<country>/<year>')
+def crountry_date(country, year):
+	crimes = get_reports(country, year)
+
+	return json.dumps(crimes)
 
 @app.route('/')
 def index():
 	return 'Welcome'
+
+def get_reports(country, year):
+	query = ('select crimes.count '
+			'from crimes '
+			'join countries '
+			'on crimes.location = countries.id '
+			'join years '
+			'on crimes.yeardate = years.year'
+			'where countries.code = ? '
+			'and where years.year = ?')
+
+	db = get_db()
+
+	cur = db.execute(query, [country, year])
+	entries = cur.fetchall()
+
+	crimes = map(lambda r: r['count'], entries)
+
+	return list(crimes)
+
+
+def get_all(country):
+	query = ('select crimes.count '
+			'from crimes join countries '
+			'on crimes.location = countries.id '
+			'where countries.code = ?')
+
+	db = get_db()
+
+	cur = db.execute(query, [country])
+	entries = cur.fetchall()
+
+	crimes = map(lambda r: r['count'], entries)
+
+	return list(crimes)
+
+def get_countries():
+	db = get_db()
+
+	cur = db.execute('select code from countries order by code desc')
+	entries = cur.fetchall()
+
+	countries = map(lambda r: r['code'], entries)
+
+	return list(countries)
+
+def get_dates():
+	db = get_db()
+
+	cur = db.execute('select year from years order by year desc')
+	entries = cur.fetchall()
+
+	years = map(lambda r: r['year'], entries)
+
+	return list(years)
 
 def save_crimes(crimes):
 	"""Save the crimes in the database."""
@@ -59,13 +123,13 @@ def save_country(countrycode):
 	country = countrycode.split(',')[1]
 
 	db = get_db()
-	cursor = db.cursor()
+	cur = db.cursor()
 
-	cursor.execute('insert into countries (code) values (?)', [country])
+	cur.execute('insert into countries (code) values (?)', [country])
 
 	db.commit()
 
-	row_id = cursor.lastrowid
+	row_id = cur.lastrowid
 
 	return row_id
 
