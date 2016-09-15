@@ -40,13 +40,14 @@ def save_crimes(crimes):
 	"""Save the crimes in the database."""
 	countries = []
 	for countrycode in crimes[r'unit,geo\time']:
-		country = save_country(countrycode)
-		countries.append(country)
+		country_id = save_country(countrycode)
+		# len countries = id?
+		countries.append(country_id)
 
 	first = True
 	for year in crimes:
 		# Cannot seem to slice crimes to ignore 0th column,
-		# so using flag to ignore specifically.
+		# so using flag to ignore.
 		if first:
 			first = False
 			continue
@@ -57,16 +58,32 @@ def save_crimes(crimes):
 def save_country(countrycode):
 	country = countrycode.split(',')[1]
 
-	# TODO save country into database.
+	db = get_db()
+	cursor = db.cursor()
 
-	return country
+	cursor.execute('insert into countries (code) values (?)', [country])
+
+	db.commit()
+
+	row_id = cursor.lastrowid
+
+	return row_id
 
 def save_crime_report(year, crime_reports):
+	date = int(year)
+	db = get_db()
+	db.execute('insert into years (year) values (?)', [date])
+	db.commit()
+
 	for (country, report_count) in crime_reports:
 		# ':' indicates no data.
 		if report_count == ':':
 			continue
-		# TODO save crime report into database.
+
+		count = int(report_count)
+
+		db.execute('insert into crimes (count,location,yeardate) values (?,?,?)',
+			[count, country, date])
 
 def parse_crimes(filepath):
 	return pd.read_csv(filepath, delim_whitespace=True)

@@ -12,7 +12,7 @@ create table years (
 drop table if exists crimes;
 create table crimes (
 	id integer primary key autoincrement,
-	reportcount integer not null,
+	count integer not null,
 	location integer not null,
 	yeardate integer not null,
 	foreign key(location) references countries(id),
