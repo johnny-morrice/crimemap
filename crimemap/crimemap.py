@@ -36,15 +36,46 @@ def crountry_date(country, date):
 def index():
 	return 'Welcome'
 
-def load_crimes(crimes):
-	pass
+def save_crimes(crimes):
+	"""Save the crimes in the database."""
+	countries = []
+	for countrycode in crimes[r'unit,geo\time']:
+		country = save_country(countrycode)
+		countries.append(country)
+
+	first = True
+	for year in crimes:
+		# Cannot seem to slice crimes to ignore 0th column,
+		# so using flag to ignore specifically.
+		if first:
+			first = False
+			continue
+
+		crime_reports = zip(countries, crimes[year])
+		save_crime_report(year, crime_reports)
+
+def save_country(countrycode):
+	country = countrycode.split(',')[1]
+
+	# TODO save country into database.
+
+	return country
+
+def save_crime_report(year, crime_reports):
+	for (country, report_count) in crime_reports:
+		# ':' indicates no data.
+		if report_count == ':':
+			continue
+		# TODO save crime report into database.
+
+def parse_crimes(filepath):
+	return pd.read_csv(filepath, delim_whitespace=True)
 
 @app.cli.command(help='Read data file and init database')
 @click.argument('filepath', nargs=1)
 def initdb(filepath):
 	init_db_schema()
 	populate_db(filepath)
-	click.echo('Should read ' + filepath)
 
 def init_db_schema():
 	db = get_db()
@@ -55,8 +86,8 @@ def init_db_schema():
 def populate_db(filepath):
 	db = get_db()
 	with app.open_resource(filepath, mode='r') as tsv:
-		crimes = pd.read_csv(filepath)
-		print(crimes)
+		crimes = parse_crimes(filepath)
+		save_crimes(crimes)
 	db.commit()
 
 def connect_db():
