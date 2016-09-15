@@ -4,3 +4,4 @@ tags
 .tags1
 *.swp
 .DS_Store
+__pycache__
