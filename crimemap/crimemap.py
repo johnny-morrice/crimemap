@@ -43,7 +43,7 @@ def country(country):
 
 @app.route('/api/countries/<country>/<year>')
 def crountry_date(country, year):
-	crimes = get_reports(country, year)
+	crimes = get_report(country, year)
 
 	return json.dumps(crimes)
 
@@ -51,22 +51,24 @@ def crountry_date(country, year):
 def index():
 	return 'Welcome'
 
-def get_reports(country, year):
+def get_report(country, year):
 	query = ('select crimes.count '
 			'from crimes '
 			'join countries on crimes.location = countries.id '
 			'join years on crimes.yeardate = years.year '
-			'where countries.code = ? '
-			'and where years.year = ?')
+			'where countries.code = ? and years.year = ?')
 
 	db = get_db()
 
 	cur = db.execute(query, [country, year])
 	entries = cur.fetchall()
 
-	crimes = map(lambda r: r['count'], entries)
+	if len(entries) > 1:
+		raise Error("Did not expect more than 1 entry")
+	elif len(entries) == 0:
+		return None
 
-	return list(crimes)
+	return entries[0]['count']
 
 
 def get_country_crimes(country):
