@@ -37,9 +37,9 @@ def countries():
 
 @app.route('/api/countries/<country>')
 def country(country):
-	all_crimes = get_country_crimes(country)
+	crimes = get_country_crimes(country)
 
-	return flask.jsonify(all_crimes)
+	return flask.jsonify(crimes)
 
 @app.route('/api/countries/<country>/<year>')
 def crountry_date(country, year):
