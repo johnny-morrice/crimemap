@@ -63,9 +63,9 @@ def get_report(country, year):
 	cur = db.execute(query, [country, year])
 	entries = cur.fetchall()
 
-	if len(entries) > 1:
-		raise Error("Did not expect more than 1 entry")
-	elif len(entries) == 0:
+	assert len(entries) < 2
+
+	if len(entries) == 0:
 		return None
 
 	return entries[0]['count']
