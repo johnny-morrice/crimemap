@@ -23,6 +23,12 @@ def dates():
 
 	return json.dumps(dates)
 
+@app.route('/api/dates/<date>')
+def date_crimes(date):
+	crimes = get_date_crimes(date)
+
+	return json.dumps(crimes)
+
 @app.route('/api/countries')
 def countries():
 	countries = get_countries()
@@ -31,7 +37,7 @@ def countries():
 
 @app.route('/api/countries/<country>')
 def country(country):
-	all_crimes = get_all(country)
+	all_crimes = get_country_crimes(country)
 
 	return json.dumps(all_crimes)
 
@@ -48,10 +54,8 @@ def index():
 def get_reports(country, year):
 	query = ('select crimes.count '
 			'from crimes '
-			'join countries '
-			'on crimes.location = countries.id '
-			'join years '
-			'on crimes.yeardate = years.year'
+			'join countries on crimes.location = countries.id '
+			'join years on crimes.yeardate = years.year '
 			'where countries.code = ? '
 			'and where years.year = ?')
 
@@ -65,10 +69,11 @@ def get_reports(country, year):
 	return list(crimes)
 
 
-def get_all(country):
-	query = ('select crimes.count '
-			'from crimes join countries '
-			'on crimes.location = countries.id '
+def get_country_crimes(country):
+	query = ('select crimes.count, years.year '
+			'from crimes '
+			'join countries on crimes.location = countries.id '
+			'join years on crimes.yeardate = years.year '
 			'where countries.code = ?')
 
 	db = get_db()
@@ -76,9 +81,9 @@ def get_all(country):
 	cur = db.execute(query, [country])
 	entries = cur.fetchall()
 
-	crimes = map(lambda r: r['count'], entries)
+	crimes = map(lambda r: (r['year'], r['count']), entries)
 
-	return list(crimes)
+	return dict(crimes)
 
 def get_countries():
 	db = get_db()
@@ -99,6 +104,22 @@ def get_dates():
 	years = map(lambda r: r['year'], entries)
 
 	return list(years)
+
+def get_date_crimes(date):
+	query = ('select crimes.count, countries.code '
+			'from crimes '
+			'join years on years.year = crimes.yeardate '
+			'join countries on countries.id = crimes.location '
+			'where years.year = ?')
+
+	db = get_db()
+
+	cur = db.execute(query, [date])
+	entries = cur.fetchall()
+
+	crimes = map(lambda r: (r['code'], r['count']), entries)
+
+	return dict(crimes)
 
 def save_crimes(crimes):
 	"""Save the crimes in the database."""
