@@ -3,5 +3,6 @@ tags
 .tags
 .tags1
 *.swp
+*.db
 .DS_Store
 __pycache__
