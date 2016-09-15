@@ -2,7 +2,7 @@ import os
 import sqlite3
 import click
 import pandas as pd
-import json
+import flask
 from flask import Flask
 from flask import g
 
@@ -21,35 +21,35 @@ app.config.from_envvar('CRIMEMAP_SETTINGS', silent=True)
 def dates():
 	dates = get_dates()
 
-	return json.dumps(dates)
+	return flask.jsonify(dates)
 
 @app.route('/api/dates/<date>')
 def date_crimes(date):
 	crimes = get_date_crimes(date)
 
-	return json.dumps(crimes)
+	return flask.jsonify(crimes)
 
 @app.route('/api/countries')
 def countries():
 	countries = get_countries()
 
-	return json.dumps(countries)
+	return flask.jsonify(countries)
 
 @app.route('/api/countries/<country>')
 def country(country):
 	all_crimes = get_country_crimes(country)
 
-	return json.dumps(all_crimes)
+	return flask.jsonify(all_crimes)
 
 @app.route('/api/countries/<country>/<year>')
 def crountry_date(country, year):
 	crimes = get_report(country, year)
 
-	return json.dumps(crimes)
+	return flask.jsonify(crimes)
 
 @app.route('/')
 def index():
-	return 'Welcome'
+	return 'Only the API is implemented.  Check source for routes.'
 
 def get_report(country, year):
 	query = ('select crimes.count '
