@@ -22,9 +22,9 @@ Assuming you have all dependencies set up:
 	$ flask initdb $PWD/data/crim_hist.tsv
 	$ flask run
 
-## HTTP GET API route examples
+## API route examples
 
-Try:
+Try HTTP GETting these (your browser's URL bar should do):
 
 * `/api/dates`
 * `/api/dates/1990`
