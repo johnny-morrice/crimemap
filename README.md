@@ -6,7 +6,7 @@ A python script parses a .tsv data file containing historical EU data on Crime. 
 
 A javascript visualisation displays the information to the user.
 
-## Fun HTTP GET API routes
+## HTTP GET API route examples
 
 Try:
 
