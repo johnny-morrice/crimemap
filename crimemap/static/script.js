@@ -98,7 +98,9 @@ function changeYear(year) {
 
 		var choropleth = {};
 
-		var normal = normalize(crimes, 'GB', ['UKM', 'UKN', 'UKC-L']);
+		// No idea what EL is supposed to be.
+		var normal = crimes.filter(function (c) { return c['country'] != 'EL' });
+		normal = normalize(crimes, 'GB', ['UKM', 'UKN', 'UKC-L']);
 		normal = normalize(normal, 'FR', ['FR', 'FX']);
 
 		var bands = new CrimeBands(normal);
@@ -120,6 +122,7 @@ function changeYear(year) {
 	});
 }
 
+// Perhaps this normalization should be done server side.
 function normalize(crimes, normalName, otherNames) {
 	var isOther = function(c) {
 		return otherNames.includes(c['country']);
@@ -148,6 +151,7 @@ function normalize(crimes, normalName, otherNames) {
 	return normal;
 }
 
+// Perhaps the alpha2 to alpha3 conversion should be done server side.
 // Incomplete ISO alpha2 to alpha3 converter just for this demo.
 var _codeMap = null;
 function alphaTwo2Three(alpha2) {
