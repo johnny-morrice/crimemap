@@ -90,9 +90,9 @@ def get_country_crimes(country):
     cur = db.execute(query, [country])
     entries = cur.fetchall()
 
-    crimes = map(lambda r: (r['year'], r['count']), entries)
+    crimes = map(lambda r: {'year': r['year'], 'count': r['count']}, entries)
 
-    return dict(crimes)
+    return list(crimes)
 
 
 def get_countries():
@@ -129,9 +129,9 @@ def get_date_crimes(date):
     cur = db.execute(query, [date])
     entries = cur.fetchall()
 
-    crimes = map(lambda r: (r['code'], r['count']), entries)
+    crimes = map(lambda r: {'country': r['code'], 'count': r['count']}, entries)
 
-    return dict(crimes)
+    return list(crimes)
 
 
 def save_crimes(crimes):
