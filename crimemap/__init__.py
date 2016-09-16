@@ -1,0 +1,1 @@
+from crimemap import app

@@ -3,7 +3,7 @@ import sqlite3
 import click
 import pandas as pd
 import flask
-from flask import Flask
+from flask import Flask, render_template
 from flask import g
 
 app = Flask(__name__)
@@ -43,13 +43,13 @@ def country(country):
 
 @app.route('/api/countries/<country>/<year>')
 def crountry_date(country, year):
-	crimes = get_report(country, year)
+    crimes = get_report(country, year)
 
 	return flask.jsonify(crimes)
 
 @app.route('/')
 def index():
-	return 'Only the API is implemented.  Check source for routes.'
+	return render_template('index.html')
 
 def get_report(country, year):
 	query = ('select crimes.count '
