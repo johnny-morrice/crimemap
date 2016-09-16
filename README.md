@@ -6,13 +6,13 @@ A python script parses a .tsv data file containing historical EU data on Crime. 
 
 A javascript visualisation displays the information to the user.
 
-# Dependencies
+## Dependencies
 
 * Python 3
 * Flask
 * Pandas
 
-# How to use
+## How to use
 
 Assuming you have all dependencies set up:
 
