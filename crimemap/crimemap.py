@@ -50,7 +50,7 @@ def country(country):
 def crountry_date(country, year):
     crimes = get_report(country, year)
 
-        return flask.jsonify(crimes)
+    return flask.jsonify(crimes)
 
 
 @app.route('/')
