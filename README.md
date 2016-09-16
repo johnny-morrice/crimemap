@@ -11,7 +11,6 @@ A javascript visualisation displays the information to the user.
 * Python 3
 * Flask
 * Pandas
-* Datamaps
 
 # How to use
 
