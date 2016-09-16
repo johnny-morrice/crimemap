@@ -98,37 +98,18 @@ function changeYear(year) {
 
 		var choropleth = {};
 
-		var bands = new CrimeBands(crimes);
+		var normal = normalize(crimes, 'GB', ['UKM', 'UKN', 'UKC-L']);
+		normal = normalize(normal, 'FR', ['FR', 'FX']);
 
-		// Normalize UK entries.
-		var isUk = function(c) {
-			var ctry = c['country']
-			return (ctry == 'UKM' || ctry == 'UKN' || ctry == 'UKC-L');
-		};
-
-		var normal = crimes.filter(function(c, i, a) {
-			return !isUk(c);
-		});
-		var uks = crimes.filter(isUk);
-		var ukCount = 0;
-		uks.forEach(function(c, i, a) {
-			ukCount += c['count'];
-		});
-
-		if (ukCount > 0) {
-			var uk = {
-				country: 'GB',
-				count: ukCount
-			};
-
-			normal.push(uk);
-		}
+		var bands = new CrimeBands(normal);
 
 		normal.forEach(function(c, i, a) {
 			var key = alphaTwo2Three(c['country']);
 			if (key != '') {
+				var band = bands.find(c['count']);
+
 				var fill = {
-					fillKey: bands.find(c['count'])
+					fillKey: band
 				};
 
 				choropleth[key] = fill;
@@ -139,45 +120,73 @@ function changeYear(year) {
 	});
 }
 
+function normalize(crimes, normalName, otherNames) {
+	var isOther = function(c) {
+		return otherNames.includes(c['country']);
+	};
+
+	var normal = crimes.filter(function(c, i, a) {
+		return !isOther(c);
+	});
+
+	var others = crimes.filter(isOther);
+
+	var reportCount = 0;
+	others.forEach(function(c, i, a) {
+		reportCount += c['count'];
+	});
+
+	if (reportCount > 0) {
+		var normalized = {
+			country: normalName,
+			count: reportCount
+		};
+
+		normal.push(normalized);
+	}
+
+	return normal;
+}
+
 // Incomplete ISO alpha2 to alpha3 converter just for this demo.
 var _codeMap = null;
 function alphaTwo2Three(alpha2) {
 	if (_codeMap == null) {
 		_codeMap = {};
-		_codeMap['GB'] = 'GBR'
-		_codeMap['AT'] = 'AUT'
-		_codeMap['BE'] = 'BEL'
-		_codeMap['BG'] = 'BGR'
-		_codeMap['CH'] = 'CHE'
-		_codeMap['CY'] = 'CYP'
-		_codeMap['CZ'] = 'CZE'
-		_codeMap['DE'] = 'DEU'
-		_codeMap['EE'] = 'EST'
-		// _codeMap['EL'] = '???'
-		_codeMap['ES'] = 'ESP'
-		_codeMap['FI'] = 'FIN'
-		_codeMap['FR'] = 'FRA'
-		// _codeMap['FX'] = '???'
-		_codeMap['HR'] = 'HRV'
-		_codeMap['HU'] = 'HUN'
-		_codeMap['IE'] = 'IRL'
-		_codeMap['IS'] = 'ISL'
-		_codeMap['LI'] = 'LIE'
-		_codeMap['LT'] = 'LTU'
-		_codeMap['LU'] = 'LUX'
-		_codeMap['LV'] = 'LVA'
-		_codeMap['MK'] = 'MKD'
-		_codeMap['MT'] = 'MLT'
-		_codeMap['NL'] = 'NLD'
-		_codeMap['NO'] = 'NOR'
-		_codeMap['PL'] = 'POL'
-		_codeMap['PT'] = 'PRT'
-		_codeMap['RO'] = 'ROU'
-		_codeMap['RS'] = 'SRB'
-		_codeMap['SE'] = 'SWE'
-		_codeMap['SI'] = 'SVN'
-		_codeMap['SK'] = 'SVK'
-		_codeMap['TR'] = 'TUR'
+		_codeMap['GB'] = 'GBR';
+		_codeMap['AT'] = 'AUT';
+		_codeMap['BE'] = 'BEL';
+		_codeMap['BG'] = 'BGR';
+		_codeMap['CH'] = 'CHE';
+		_codeMap['CY'] = 'CYP';
+		_codeMap['CZ'] = 'CZE';
+		_codeMap['DE'] = 'DEU';
+		_codeMap['DK'] = 'DNK';
+		_codeMap['EE'] = 'EST';
+		// _codeMap['EL'] = '???';
+		_codeMap['ES'] = 'ESP';
+		_codeMap['FI'] = 'FIN';
+		_codeMap['FR'] = 'FRA';
+		_codeMap['HR'] = 'HRV';
+		_codeMap['HU'] = 'HUN';
+		_codeMap['IE'] = 'IRL';
+		_codeMap['IS'] = 'ISL';
+		_codeMap['LI'] = 'LIE';
+		_codeMap['LT'] = 'LTU';
+		_codeMap['LU'] = 'LUX';
+		_codeMap['LV'] = 'LVA';
+		_codeMap['MK'] = 'MKD';
+		_codeMap['MT'] = 'MLT';
+		_codeMap['NL'] = 'NLD';
+		_codeMap['NO'] = 'NOR';
+		_codeMap['PL'] = 'POL';
+		_codeMap['PT'] = 'PRT';
+		_codeMap['RO'] = 'ROU';
+		_codeMap['RS'] = 'SRB';
+		_codeMap['SE'] = 'SWE';
+		_codeMap['SI'] = 'SVN';
+		_codeMap['SK'] = 'SVK';
+		_codeMap['TR'] = 'TUR';
 	}
 
 	return _codeMap[alpha2];
@@ -192,7 +201,10 @@ function CrimeBands(crimes) {
 		return c['count'];
 	});
 
-	this.counts.sort();
+	// Default sort is not numeric.
+	this.counts.sort(function(a, b) {
+		return a - b;
+	});
 
 	// Prepare trivial cases first
 	if (this.counts.length == 1) {
