@@ -28,7 +28,7 @@ function drawMap() {
 	var map = new Datamap({
 		element: container,
 		responsive: true,
-		aspectRatio: 0.37,
+		aspectRatio: 0.34,
 		setProjection: projection
 	});
 }

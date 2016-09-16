@@ -6,6 +6,7 @@
     <meta name="keywords" content="">
     <meta name="author" content="">
     <title>EU Historical Crime Reports</title>
+		<link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgo=">
     <link href="static/style.css" rel="stylesheet" type="text/css">
 		<script src="static/vendor/jquery.min.js"></script>
 		<script src="static/vendor/d3.min.js"></script>
@@ -19,18 +20,21 @@
 	</div>
 	<div id="visualisation-container">
 	</div>
-	<div class="control">
-		<select id="year-selector" class="control control-year"></select>
+	<div id="hud" class="clearfix">
+		<div class="help">
+			Colouring is relative to the country with most crimes reported in the given year.
+			<ul class="help-key">
+				<li class="key key-demo key-no-data">No data</li>
+				<li class="key key-demo key-low">Low</li>
+				<li class="key key-demo key-med">Medium</li>
+				<li class="key key-demo key-high">High</li>
+			</ul>
+		</div>
+		<div class="control">
+			<label for="year-selector"><strong>Choose year</strong></label>
+			<select id="year-selector" name="year-selector" class="control control-year"></select>
+		</div>
 	</div>
-	<div>
-		Colouring is relative to the country with most crimes reported in the given year.
-	  <ul class="key">
-			<li class="key key-demo key-no-data">No data</li>
-			<li class="key key-demo key-low">Low</li>
-			<li class="key key-demo key-med">Medium</li>
-			<li class="key key-demo key-high">High</li>
-	  </ul>
-	</div>
-	<p class="footer"><a href="https://data.europa.eu/euodp/en/data/dataset/qdxC0mEw46A0rQODgMzCQ">Source</a></p>
+	<p class="footer"><a href="https://data.europa.eu/euodp/en/data/dataset/qdxC0mEw46A0rQODgMzCQ">Data sourced from European Union Open Data Portal</a></p>
   </body>
 </html>
