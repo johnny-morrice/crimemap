@@ -17,3 +17,23 @@ select {
 	display: inline-block;
 	width: 100%;
 }
+
+.key {
+	min-width: 2em;
+}
+
+.key-no-data {
+	background-color: #ccc;
+}
+
+.key-low {
+	background-color: #0c0;
+}
+
+.key-med {
+	background-color: #ff0;
+}
+
+.key-high {
+	background-color: #f00;
+}
