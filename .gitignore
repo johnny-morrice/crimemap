@@ -4,5 +4,6 @@ tags
 .tags1
 *.swp
 *.db
+*.pyc
 .DS_Store
 __pycache__
