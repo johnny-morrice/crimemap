@@ -19,7 +19,7 @@ function drawMap() {
 	var projection = function(element) {
 		var proj = d3.geo.mercator()
 			.center(center)
-			.scale(800)
+			.scale(400)
 			.translate([element.offsetWidth / 2, element.offsetHeight / 2]);
 		var path = d3.geo.path()
 			.projection(proj);
