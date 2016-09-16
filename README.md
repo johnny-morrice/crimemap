@@ -8,9 +8,9 @@ A javascript visualisation displays the information to the user.
 
 ## Dependencies
 
-* Python 3
-* Flask
-* Pandas
+* Python 3 (Tested with 3.5.0)
+* Flask (Tested with 0.11.1)
+* Pandas (Tested with 0.18.1)
 
 ## How to use
 
