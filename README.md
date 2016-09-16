@@ -33,7 +33,7 @@ Try HTTP GETting these (your browser's URL bar should do):
 
 ## Data source
 
-[Crimes Recorded by the police (1950-2000)](https://data.europa.eu/euodp/en/data/dataset/qdxC0mEw46A0rQODgMzCQ)
+[Crimes Recorded by the Police (1950-2000)](https://data.europa.eu/euodp/en/data/dataset/qdxC0mEw46A0rQODgMzCQ)
 
 ## Credits
 
