@@ -118,7 +118,7 @@ function changeYear(year) {
 			}
 		});
 
-		datamap.updateChoropleth(choropleth);
+		datamap.updateChoropleth(choropleth, {reset: true});
 	});
 }
 
