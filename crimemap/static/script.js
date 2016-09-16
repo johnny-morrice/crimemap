@@ -1,4 +1,6 @@
 var datamap;
+// crimeReports is global variable to enable popupTemplate.
+var crimeReports = {};
 
 $(document).ready(function() {
 	drawMap();
@@ -37,6 +39,19 @@ function drawMap() {
 			low: '#0c0',
 			med: '#ff0',
 			high: '#f00'
+		},
+		geographyConfig: {
+			popupTemplate: function(geo, data) {
+				var name = geo.properties.name;
+				var id = geo.id;
+				var count = crimeReports[id];
+
+				if (count == null) {
+					return '<div class="hoverinfo"><strong>' + name + '</strong></div>';
+				}
+
+				return '<div class="hoverinfo"><strong>' + name + ':</strong> ' + count + '</div>';
+			},
 		}
 	});
 }
@@ -96,8 +111,6 @@ function changeYear(year) {
 			throw badStatusError(status);
 		}
 
-		var choropleth = {};
-
 		// No idea what EL is supposed to be.
 		var normal = crimes.filter(function (c) { return c['country'] != 'EL' });
 		normal = normalize(crimes, 'GB', ['UKM', 'UKN', 'UKC-L']);
@@ -105,16 +118,20 @@ function changeYear(year) {
 
 		var bands = new CrimeBands(normal);
 
+		var choropleth = {};
+		crimeReports = {};
 		normal.forEach(function(c, i, a) {
 			var key = alphaTwo2Three(c['country']);
 			if (key != '') {
-				var band = bands.find(c['count']);
+				var count = c['count'];
+				var band = bands.find(count);
 
 				var fill = {
 					fillKey: band
 				};
 
 				choropleth[key] = fill;
+				crimeReports[key] = count;
 			}
 		});
 
