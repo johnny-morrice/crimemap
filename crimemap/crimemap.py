@@ -109,7 +109,7 @@ def get_countries():
 def get_dates():
     db = get_db()
 
-    cur = db.execute('select year from years order by year desc')
+    cur = db.execute('select year from years order by year asc')
     entries = cur.fetchall()
 
     years = map(lambda r: r['year'], entries)

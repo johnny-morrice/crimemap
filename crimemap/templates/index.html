@@ -5,7 +5,7 @@
     <meta name="description" content="">
     <meta name="keywords" content="">
     <meta name="author" content="">
-    <title>EU Historical Crime Reports 1950-2000</title>
+    <title>EU Historical Crime Reports</title>
     <link href="static/style.css" rel="stylesheet" type="text/css">
 		<script src="static/vendor/jquery.min.js"></script>
 		<script src="static/vendor/d3.min.js"></script>
@@ -14,8 +14,13 @@
     <script src="static/script.js"></script>
   </head>
   <body>
-  <h1>EU Historical Crime Reports 1950-2000</h1>
+	<div id="heading">
+	  <h1>EU Historical Crime Reports</h1>
+	</div>
 	<div id="visualisation-container">
+	</div>
+	<div class="control">
+		<select id="year-selector" class="control control-year"></select>
 	</div>
 	<div>
 		Colouring is relative to the country with most crimes reported in the given year.
