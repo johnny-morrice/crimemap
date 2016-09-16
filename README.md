@@ -1,8 +1,9 @@
-# Visualisation of historical EU crime data
+# Visualisation of Historical EU Crime Data
 
 ![Historical Crime Map](crimemap/static/crimemap.png)
 
-A python script parses a .tsv data file containing historical EU data on Crime.  The data is then stored in a sqlite database and served over an API.
+A python script parses a .tsv data file containing historical EU data
+on crime.  The data is then stored in a sqlite database and served over an API.
 
 A javascript visualisation displays the information to the user.
 
