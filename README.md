@@ -6,6 +6,23 @@ A python script parses a .tsv data file containing historical EU data on Crime. 
 
 A javascript visualisation displays the information to the user.
 
+# Dependencies
+
+* Python 3
+* Flask
+* Pandas
+* Datamaps
+
+# How to use
+
+Assuming you have all dependencies set up:
+
+	$ git clone https://github.com/johnny-morrice/crimemap.git
+	$ cd crimemap
+	$ export FLASK_APP=crimemap/crimemap.py
+	$ flask initdb $PWD/data/crim_hist.tsv
+	$ flask run
+
 ## HTTP GET API route examples
 
 Try:
