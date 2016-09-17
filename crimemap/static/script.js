@@ -29,18 +29,34 @@ function drawMap() {
 		return {path: path, projection: proj}
 	}
 
+	var crimeFills = {
+		defaultFill: '#ccc',
+		low: 'rgb(243, 218, 10)',
+		med: 'rgb(235, 141, 0)',
+		high: 'rgb(242, 35, 26)'
+	};
+
 	datamap = new Datamap({
 		element: container,
 		responsive: true,
 		aspectRatio: 0.34,
 		setProjection: projection,
-		fills: {
-			defaultFill: '#ccc',
-			low: '#0c0',
-			med: '#ff0',
-			high: '#f00'
-		},
+		fills: crimeFills,
 		geographyConfig: {
+			highlightFillColor: function(geo) {
+				switch (geo.fillKey)
+				{
+					case 'low':
+						return 'rgb(162, 144, 10)';
+					case 'med':
+						return 'rgb(152, 81, 5)';
+					case 'high':
+						return 'rgb(157, 19, 14)';
+					default:
+						return 'rgb(44, 44, 44)';
+				}
+			},
+			highlightBorderColor: '#fff',
 			popupTemplate: function(geo, data) {
 				var name = geo.properties.name;
 				var id = geo.id;

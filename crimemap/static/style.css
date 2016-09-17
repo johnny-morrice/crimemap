@@ -27,13 +27,13 @@ select {
 }
 
 .key-low {
-	background-color: #0c0;
+	background-color: rgb(243, 218, 10);
 }
 
 .key-med {
-	background-color: #ff0;
+	background-color: rgb(235, 141, 0);
 }
 
 .key-high {
-	background-color: #f00;
+	background-color: rgb(242, 35, 26);
 }
