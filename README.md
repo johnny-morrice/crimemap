@@ -7,8 +7,7 @@ on crime.  The data is then stored in a sqlite database and served over an API.
 
 A javascript visualisation displays the information to the user.
 
-Note: this visualisation is a programming demo, rather than a
-statistics demo.  E.g. where is East Germany?
+[Try at demo](http://crimemap.jmorrice.teoma.io/)
 
 ## Dependencies
 
@@ -38,6 +37,12 @@ Try HTTP GETting these (your browser's URL bar should do):
 ## Data source
 
 [Crimes Recorded by the Police (1950-2000)](https://data.europa.eu/euodp/en/data/dataset/qdxC0mEw46A0rQODgMzCQ)
+
+## Disclaimer
+
+This visualisation is a programming demo, rather than a statistics demo.  
+
+E.g. where is East Germany?
 
 ## Credits
 
