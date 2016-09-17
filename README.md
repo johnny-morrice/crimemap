@@ -7,6 +7,9 @@ on crime.  The data is then stored in a sqlite database and served over an API.
 
 A javascript visualisation displays the information to the user.
 
+Note: this visualisation is a programming demo, rather than a
+statistics demo.  E.g. where is East Germany?
+
 ## Dependencies
 
 * Python 3 (Tested with 3.5.0)
