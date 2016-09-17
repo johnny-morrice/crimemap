@@ -2,6 +2,7 @@ import os
 import sqlite3
 import click
 import pandas as pd
+import logging
 import flask
 from flask import Flask, render_template
 from flask import g
@@ -9,14 +10,15 @@ from flask import g
 app = Flask(__name__)
 app.config.from_object(__name__)
 
+default_database = os.path.join(app.root_path, 'database', 'crimemap.db')
+
 app.config.update(dict(
-    DATABASE=os.path.join(app.root_path, 'crimemap.db'),
+    DATABASE=default_database,
     SECRET_KEY='development key',
     USERNAME='admin',
     PASSWORD='default'
 ))
 app.config.from_envvar('CRIMEMAP_SETTINGS', silent=True)
-
 
 @app.route('/api/dates')
 def dates():
@@ -195,6 +197,7 @@ def parse_crimes(filepath):
 def initdb(filepath):
     init_db_schema()
     populate_db(filepath)
+    print('Saved database in %s' % app.config['DATABASE'])
 
 
 def init_db_schema():
@@ -233,3 +236,6 @@ def close_db(error):
     """Closes the database again at the end of the request."""
     if hasattr(g, 'sqlite_db'):
         g.sqlite_db.close()
+
+if __name__ == '__main__':
+    app.run()
