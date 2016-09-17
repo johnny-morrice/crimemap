@@ -7,6 +7,13 @@ $(document).ready(function() {
 	loadDateRange();
 });
 
+// Alternatively with jQuery
+    $(window).on('resize', function() {
+			if (datamap != null) {
+				datamap.resize();
+			}
+    });
+
 function drawMap() {
 	// Don't use JQuery to grab Datamap container in order to minimize
 	// inter-dependency glitches.
